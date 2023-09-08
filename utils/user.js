@@ -1,8 +1,7 @@
 import redisClient from './redis';
 import dbClient from './db';
 
-// Module with user utilities
-
+ // Module with user utilities
 const userUtils = {
    // Gets a user id and key of redis from request
   async getUserIdAndKey(request) {

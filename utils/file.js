@@ -5,10 +5,15 @@ import dbClient from './db';
 import userUtils from './user';
 import basicUtils from './basic';
 
- // Module with file utilities
-
+/**
+ * Module with file utilities
+ */
 const fileUtils = {
-   // Validates if body is valid for creating file
+  /**
+   * Validates if body is valid for creating file
+   * @request {request_object} express request obj
+   * @return {object} object with err and validated params
+   */
   async validateBody(request) {
     const {
       name, type, isPublic = false, data,
@@ -59,19 +64,34 @@ const fileUtils = {
     return obj;
   },
 
-// gets file document from db
+  /**
+   * gets file document from db
+   * @query {obj} query used to find file
+   * @return {object} file
+   */
   async getFile(query) {
     const file = await dbClient.filesCollection.findOne(query);
     return file;
   },
 
-   // gets list of file documents from db belonging
+  /**
+   * gets list of file documents from db belonging
+   * to a parent id
+   * @query {obj} query used to find file
+   * @return {Array} list of files
+   */
   async getFilesOfParentId(query) {
     const fileList = await dbClient.filesCollection.aggregate(query);
     return fileList;
   },
 
-   // saves files to database and disk
+  /**
+   * saves files to database and disk
+   * @userId {string} query used to find file
+   * @fileParams {obj} object with attributes of file to save
+   * @FOLDER_PATH {string} path to save file in disk
+   * @return {obj} object with error if present and file
+   */
   async saveFile(userId, fileParams, FOLDER_PATH) {
     const {
       name, type, isPublic, data,
@@ -118,7 +138,12 @@ const fileUtils = {
     return { error: null, newFile };
   },
 
-   // Updates a file document in database
+  /**
+   * Updates a file document in database
+   * @query {obj} query to find document to update
+   * @set {obj} object with query info to update in Mongo
+   * @return {object} updated file
+   */
   async updateFile(query, set) {
     const fileList = await dbClient.filesCollection.findOneAndUpdate(
       query,
@@ -128,7 +153,12 @@ const fileUtils = {
     return fileList;
   },
 
-   // Makes a file public or private
+  /**
+   * Makes a file public or private
+   * @request {request_object} express request obj
+   * @setPublish {boolean} true or false
+   * @return {object} error, status code and updated file
+   */
   async publishUnpublish(request, setPublish) {
     const { id: fileId } = request.params;
 
